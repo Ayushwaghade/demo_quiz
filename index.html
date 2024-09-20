@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arithmetic Quiz</title>
+  </head>
+  <body>
+    <h1>Arithmetic Quiz</h1>
+    <div id="question"></div>
+    <input type="number" id="answerInput" placeholder="Enter your answer" />
+    <button id="submitAnswerBtn">Submit Answer</button>
+    <div id="scores"></div>
+
+    <script>
+      const socket = new WebSocket("ws://localhost:8080");
+
+      socket.onmessage = function (event) {
+        const question = event.data; // Assuming the question is sent as a plain text message
+        document.getElementById("question").innerText = question;
+      };
+
+      function submitAnswer() {
+        const answer = document.getElementById("answerInput").value;
+        socket.send(answer);
+      }
+
+      document
+        .getElementById("submitAnswerBtn")
+        .addEventListener("click", submitAnswer);
+    </script>
+  </body>
+</html>
